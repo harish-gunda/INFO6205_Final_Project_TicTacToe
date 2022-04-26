@@ -159,4 +159,28 @@ class PlayGame {
         }
         return true;
     }
+    public static char[][] convertStrToArray(String str){
+        char[][] board = new char[3][3];
+        for (int i = 0; i < str.length(); i++) {
+            System.out.println("str : "+str.charAt(i));
+        }
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                int pos = i * 3 + j;
+                board[i][j] = str.charAt(pos);
+            }
+        }
+        drawBoard(board);
+        return board;
+    }
+    public static Integer convertArrayToStr(char[][] board){
+        int pos = 0;
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                pos = i * 3 + j;
+            }
+        }
+        System.out.println(" pos : "+pos);
+        return pos;
+    }
 }

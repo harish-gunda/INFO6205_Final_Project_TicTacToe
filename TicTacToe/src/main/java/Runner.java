@@ -18,26 +18,26 @@ public class Runner {
         List<Integer> d = new ArrayList<>();
         MenaceStrategy menaceStrategy = new MenaceStrategy();
         HumanStrategy humanStrategy = new HumanStrategy();
-        for (int i = 0; i<NUMBER_OF_TRAINS; i++) {
-            Game game = new Game(menaceStrategy, humanStrategy);
-            gameResult = game.run();
-//            game.peekCurrentState();
-            if (gameResult==0) {
-                d.add(i);
-                draws++;
-            } else if (gameResult==1) {
-                m.add(i);
-                menaceWins++;
-            } else  {
-                h.add(i);
-                humanWins++;
-            }
-            menaceStrategy.updateBeads(gameResult, beta, gamma, delta);
-        }
-        System.out.println("Menacewins: "+menaceWins+" || Humanwins: "+humanWins+" || Draws: "+draws);
-        System.out.println(Arrays.toString(m.toArray()));
-        System.out.println(Arrays.toString(h.toArray()));
-        System.out.println(Arrays.toString(d.toArray()));
+//        for (int i = 0; i<NUMBER_OF_TRAINS; i++) {
+//            Game game = new Game(menaceStrategy, humanStrategy);
+//            gameResult = game.run();
+////            game.peekCurrentState();
+//            if (gameResult==0) {
+//                d.add(i);
+//                draws++;
+//            } else if (gameResult==1) {
+//                m.add(i);
+//                menaceWins++;
+//            } else  {
+//                h.add(i);
+//                humanWins++;
+//            }
+//            menaceStrategy.updateBeads(gameResult, beta, gamma, delta);
+//        }
+//        System.out.println("Menacewins: "+menaceWins+" || Humanwins: "+humanWins+" || Draws: "+draws);
+//        System.out.println(Arrays.toString(m.toArray()));
+//        System.out.println(Arrays.toString(h.toArray()));
+//        System.out.println(Arrays.toString(d.toArray()));
 
     }
 

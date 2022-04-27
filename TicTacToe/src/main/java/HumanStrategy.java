@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class HumanStrategy {
 
     int[][] board2d;
@@ -12,38 +16,39 @@ public class HumanStrategy {
         return b;
     }
 
-    public int checkWin(int position, int player) {
-        if (position == -1) {
-            return 0;
-        }
-        int i = position/3;
-        int j = position%3;
-
-        if (board2d[i][0] == board2d[i][1] && board2d[i][1] == board2d[i][2]) {
-            return player;
-        }
-        if (board2d[0][j] == board2d[1][j] && board2d[1][j] == board2d[2][j]) {
-            return player;
-        }
-
-        if (Math.abs(i-j)==2 || i==j) {
-            if (board2d[0][0] == board2d[1][1] && board2d[1][1] == board2d[2][2] && board2d[1][1]==player) {
-                return player;
-            }
-            if (board2d[0][2] == board2d[1][1] && board2d[1][1] == board2d[2][0] && board2d[1][1]==player) {
-                return player;
-            }
-        }
-        return 0;
+    public boolean probability(float p){
+        Random rand = new Random(); //instance of random class
+        int upperbound = 10;
+        //generate random values from 1-10
+        int int_random = rand.nextInt(upperbound)+1;
+        int pStar = Math.round(p)*10;
+        return pStar < int_random;
     }
 
-    public int nextOptimalStep(String board,String player) {
+
+
+    public int nextOptimalStep(String board,String player, float p) {
+        if (probability(p)){
+            List<Integer> indexes = new ArrayList<>();
+            for(int i=0;i<9;i++){
+                if(board.charAt(i)=='0'){
+                    indexes.add(i);
+                }
+            }
+            Random rand = new Random();
+            if (indexes.size()==0){
+                return -1;
+            }
+            int int_random = rand.nextInt(indexes.size());
+            System.out.println("random");
+            return indexes.get(int_random);
+        }
         //rule 1
         for (int i = 0; i < 9; i++) {
             board2d = convert1dstringTo2darray(board);
             if (board.charAt(i) == '0'){
                 board2d[i/3][i%3] = 2;
-                if (checkWin(i, Integer.parseInt(player))==Integer.parseInt(player)) {
+                if (Game.checkwin(board2d,i, Integer.parseInt(player))==Integer.parseInt(player)) {
                     System.out.println("rule 1");
                     return i;
                 }
@@ -59,7 +64,7 @@ public class HumanStrategy {
             board2d = convert1dstringTo2darray(board);
             if (board.charAt(i) == '0'){
                 board2d[i/3][i%3] = 1;
-                if (checkWin(i, Integer.parseInt(opposition))==Integer.parseInt(opposition)) {
+                if (Game.checkwin(board2d,i, Integer.parseInt(opposition))==Integer.parseInt(opposition)) {
                     System.out.println("rule 2");
                     return i;
                 }

@@ -3,11 +3,17 @@ public class Game {
     private int[][] board;
     public MenaceStrategy menaceStrategy;
     public HumanStrategy humanStrategy;
+    public float p;
 
-    public Game(MenaceStrategy menaceStrategy, HumanStrategy humanStrategy) {
+    public void setP(float p) {
+        this.p = p;
+    }
+
+    public Game(MenaceStrategy menaceStrategy, HumanStrategy humanStrategy, float p) {
         board = new int[3][3];
         this.menaceStrategy = menaceStrategy;
         this.humanStrategy = humanStrategy;
+        this.p = p;
     }
 
     public String convert2dboardToString(int[][] board) {
@@ -29,7 +35,7 @@ public class Game {
     }
 
 
-    public int checkwin(int pos, int player) {
+    public static int checkwin(int[][] board,int pos, int player) {
         if (pos == -1) {
             return 0;
         }
@@ -59,7 +65,7 @@ public class Game {
         int player = 1;
         int position = -1;
         String s = convert2dboardToString(board);
-        while (checkwin(position, player)==0) {
+        while (checkwin(board,position, player)==0) {
             if (player == 1) {
                 position = menaceStrategy.nextOptimalStep(s);
                 if (position==-1) {
@@ -68,27 +74,29 @@ public class Game {
                 board[position / 3][position % 3] = 1;
 
                 s = convert2dboardToString(board);
-                if(checkwin(position,player)!=0){
-                    return checkwin(position,player);
+                if(checkwin(board,position,player)!=0){
+                    return checkwin(board,position,player);
                 }
                 player = 2;
             } else {
-                position = humanStrategy.nextOptimalStep(s,"2");
+                s = convert2dboardToString(board);
+
+                position = humanStrategy.nextOptimalStep(s,"2", p);
                 if (position==-1) {
                     return 0;
                 }
                 board[position / 3][position % 3] = 2;
 
                 s = convert2dboardToString(board);
-                if(checkwin(position,player)!=0){
-                    return checkwin(position,player);
+                if(checkwin(board,position,player)!=0){
+                    return checkwin(board,position,player);
                 }
                 player = 1;
             }
             peekCurrentState();
 
         }
-        return checkwin(position, player);
+        return checkwin(board,position, player);
     }
 
 }

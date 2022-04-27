@@ -3,38 +3,42 @@ import java.util.*;
 public class Runner {
 
     public static void main(String[] args) {
-        MenaceStrategy m = new MenaceStrategy();
-        HumanStrategy h = new HumanStrategy();
-        List<Integer> mlist = new ArrayList<>();
-        List<Integer> hlist = new ArrayList<>();
-        List<Integer> draw = new ArrayList<>();
-        int mc = 0;
-        int hc = 0;
-        int dc = 0;
-        int alpha = 3;
-        int beta = 1;
-        int delta = 0;
-        int j;
-        for (int i = 0; i<10000000; i++) {
-            Game r = new Game(m, h);
-            j = r.start();
-            if (j==0) {
-                dc++;
-                draw.add(i);
-            } else if (j==1) {
-                mc++;
-                mlist.add(i);
-            } else  {
-                hc++;
-                hlist.add(i);
-            }
-            m.updateBeads(j, alpha, beta, delta);
-        }
-        System.out.println("M: "+mc+" H: "+hc+" D: "+dc);
 
-//        System.out.println(mlist);
-//        System.out.println(hlist);
-//        System.out.println(draw);
+
+        int beta = 10;
+        int gamma = 5;
+        int delta = 1;
+        int gameResult;
+        int menaceWins = 0;
+        int humanWins = 0;
+        int draws = 0;
+        int NUMBER_OF_TRAINS = 100000;
+        List<Integer> m = new ArrayList<>();
+        List<Integer> h = new ArrayList<>();
+        List<Integer> d = new ArrayList<>();
+        MenaceStrategy menaceStrategy = new MenaceStrategy();
+        HumanStrategy humanStrategy = new HumanStrategy();
+        for (int i = 0; i<NUMBER_OF_TRAINS; i++) {
+            Game game = new Game(menaceStrategy, humanStrategy);
+            gameResult = game.run();
+//            game.peekCurrentState();
+            if (gameResult==0) {
+                d.add(i);
+                draws++;
+            } else if (gameResult==1) {
+                m.add(i);
+                menaceWins++;
+            } else  {
+                h.add(i);
+                humanWins++;
+            }
+            menaceStrategy.updateBeads(gameResult, beta, gamma, delta);
+        }
+        System.out.println("Menacewins: "+menaceWins+" || Humanwins: "+humanWins+" || Draws: "+draws);
+        System.out.println(Arrays.toString(m.toArray()));
+        System.out.println(Arrays.toString(h.toArray()));
+        System.out.println(Arrays.toString(d.toArray()));
+
     }
 
 }

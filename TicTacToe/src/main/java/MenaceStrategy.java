@@ -1,94 +1,80 @@
 import java.util.*;
 
 public class MenaceStrategy {
-
     
-
     private int INITIAL = 100;
     private Map<String, List<Integer>> beads = new HashMap<>();
-    private List<String> roundString = new ArrayList<>();
-    private List<Integer> roundPositions = new ArrayList<>();
+    private Map<String, Integer> menaceMove = new HashMap<>();
 
-    public void updateBeads(int result, int a, int b, int d) {
-        if (result == 0) {int l = roundPositions.size();
-            for (int i=0; i<l; i++) {
-                int j = 0;
-                while (j<d) {
-                    beads.get(roundString.get(0)).add(roundPositions.get(0));
+
+    public void updateBeads(int result, int beta, int gamma, int delta) {
+        if (result == 0) {
+            for(Map.Entry<String, Integer> move:menaceMove.entrySet()){
+                int j =0;
+                while (j<delta) {
+                    beads.get(move.getKey()).add(move.getValue());
                     j++;
                 }
-                roundPositions.remove(0);
-                roundString.remove(0);
             }
+
+
         } else if (result == 1) {
-            int l = roundPositions.size();
-            for (int i=0; i<l; i++) {
-                int j = 0;
-                while (j<b) {
-                    beads.get(roundString.get(0)).add(roundPositions.get(0));
+            for(Map.Entry<String, Integer> move:menaceMove.entrySet()){
+                int j =0;
+                while (j<beta) {
+                    beads.get(move.getKey()).add(move.getValue());
                     j++;
                 }
-                roundPositions.remove(0);
-                roundString.remove(0);
             }
         } else {
-            int l = roundPositions.size();
-            for (int i=0; i<l; i++) {
-                int j = 0;
-                while (j<a) {
-                    beads.get(roundString.get(0)).add(roundPositions.get(0));
+            for(Map.Entry<String, Integer> move:menaceMove.entrySet()){
+                int j =0;
+                while (j<gamma) {
+                    if(beads.get(move.getKey()).size()>1) {
+                        beads.get(move.getKey()).remove(move.getValue());
+                    }
                     j++;
                 }
-                roundPositions.remove(0);
-                roundString.remove(0);
             }
         }
     }
 
-    public int turn(String s) {
+    public int nextOptimalStep(String boardState) {
         Random rand = new Random();
-        if (beads.containsKey(s)) {
-            if (beads.get(s).size()<=1) {
-                return beads.get(s).get(0);
+        if (beads.containsKey(boardState)) {
+            if (beads.get(boardState).size()<=1) {
+                return beads.get(boardState).get(0);
             }
-            int zeros = beads.get(s).remove(rand.nextInt(beads.get(s).size()));
-            roundString.add(s);
-            roundPositions.add(zeros);
-            return zeros;
+            int bead = beads.get(boardState).remove(rand.nextInt(beads.get(boardState).size()));
+            menaceMove.put(boardState,bead);
+            return bead;
         }
         else {
-            createKeyValue(s);
-            int zeros = beads.get(s).remove(rand.nextInt(beads.get(s).size()));
-            roundString.add(s);
-            roundPositions.add(zeros);
-            return zeros;
+            createKeyValue(boardState);
+            int bead = beads.get(boardState).remove(rand.nextInt(beads.get(boardState).size()));
+            menaceMove.put(boardState,bead);
+            return bead;
         }
     }
 
-    public void createKeyValue(String s) {
-        List<Integer> zeros = new ArrayList<>();
+    public void createKeyValue(String boardState) {
+        int zeros = 0;
         List<Integer> positions = new ArrayList<>();
-        for (int i=0; i<s.length(); i++) {
-            if(s.charAt(i)=='0') {
-                zeros.add(i);
+        for (int i=0; i<boardState.length(); i++) {
+            if(boardState.charAt(i)=='0') {
+                zeros++;
+                for(int j=0;j<INITIAL;j++){
+                    positions.add(i);
+                }
             }
         }
-        int length = zeros.size();
-        if (length==0) {
-            for (int i=0; i<INITIAL; i++) {
+        if(zeros==0){
+            for(int j=0;j<INITIAL;j++){
                 positions.add(-1);
             }
-            beads.put(s, positions);
-            return;
         }
-        for (int i=0; i<INITIAL; i++) {
-            int j=0;
-            while (j<length) {
-                positions.add(zeros.get(j));
-                j++;
-            }
-        }
-        beads.put(s, positions);
+
+        beads.put(boardState, positions);
     }
 
 

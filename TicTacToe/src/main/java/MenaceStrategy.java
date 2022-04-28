@@ -2,9 +2,13 @@ import java.util.*;
 
 public class MenaceStrategy {
     
-    private int INITIAL = 100;
-    private Map<String, List<Integer>> beads = new HashMap<>();
+    private int ALPHA;
+    public Map<String, List<Integer>> beads = new HashMap<>();
     private Map<String, Integer> menaceMove = new HashMap<>();
+
+    public MenaceStrategy(int ALPHA){
+        this.ALPHA = ALPHA;
+    }
 
 
     public void updateBeads(int result, int beta, int gamma, int delta) {
@@ -63,13 +67,13 @@ public class MenaceStrategy {
         for (int i=0; i<boardState.length(); i++) {
             if(boardState.charAt(i)=='0') {
                 zeros++;
-                for(int j=0;j<INITIAL;j++){
+                for(int j = 0; j< ALPHA; j++){
                     positions.add(i);
                 }
             }
         }
         if(zeros==0){
-            for(int j=0;j<INITIAL;j++){
+            for(int j = 0; j< ALPHA; j++){
                 positions.add(-1);
             }
         }

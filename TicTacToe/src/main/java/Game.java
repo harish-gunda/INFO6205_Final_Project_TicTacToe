@@ -1,13 +1,25 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 public class Game {
 
-    private int[][] board;
+    public int[][] board;
     public MenaceStrategy menaceStrategy;
     public HumanStrategy humanStrategy;
+    public float p;
+    private static final Logger logger = LogManager.getLogger(Game.class);
 
-    public Game(MenaceStrategy menaceStrategy, HumanStrategy humanStrategy) {
+
+    public void setP(float p) {
+        this.p = p;
+    }
+
+    public Game(MenaceStrategy menaceStrategy, HumanStrategy humanStrategy, float p) {
         board = new int[3][3];
         this.menaceStrategy = menaceStrategy;
         this.humanStrategy = humanStrategy;
+        this.p = p;
     }
 
     public String convert2dboardToString(int[][] board) {
@@ -22,14 +34,17 @@ public class Game {
 
     public void peekCurrentState() {
         for (int i=0; i<3; i++) {
-            System.out.println(board[i][0]+" || "+board[i][1]+" || "+board[i][2]);
-            System.out.println("______________");
+            logger.info(board[i][0]+" || "+board[i][1]+" || "+board[i][2]);
+//            System.out.println(board[i][0]+" || "+board[i][1]+" || "+board[i][2]);
+            logger.info("______________");
+//            System.out.println("______________");
         }
-        System.out.println("######################");
+        logger.info("######################");
+//        System.out.println("######################");
     }
 
 
-    public int checkwin(int pos, int player) {
+    public static int checkwin(int[][] board,int pos, int player) {
         if (pos == -1) {
             return 0;
         }
@@ -55,40 +70,42 @@ public class Game {
     }
 
     public int run() {
-        peekCurrentState();
+//        peekCurrentState();
         int player = 1;
         int position = -1;
         String s = convert2dboardToString(board);
-        while (checkwin(position, player)==0) {
+        while (checkwin(board,position, player)==0) {
             if (player == 1) {
                 position = menaceStrategy.nextOptimalStep(s);
                 if (position==-1) {
                     return 0;
                 }
                 board[position / 3][position % 3] = 1;
-
+//                peekCurrentState();
                 s = convert2dboardToString(board);
-                if(checkwin(position,player)!=0){
-                    return checkwin(position,player);
+                if(checkwin(board,position,player)!=0){
+                    return checkwin(board,position,player);
                 }
                 player = 2;
             } else {
-                position = humanStrategy.nextOptimalStep(s,"2");
+                s = convert2dboardToString(board);
+
+                position = humanStrategy.nextOptimalStep(s,"2", p);
                 if (position==-1) {
                     return 0;
                 }
                 board[position / 3][position % 3] = 2;
-
+//                peekCurrentState();
                 s = convert2dboardToString(board);
-                if(checkwin(position,player)!=0){
-                    return checkwin(position,player);
+                if(checkwin(board,position,player)!=0){
+                    return checkwin(board,position,player);
                 }
                 player = 1;
             }
-            peekCurrentState();
+
 
         }
-        return checkwin(position, player);
+        return checkwin(board,position, player);
     }
 
 }

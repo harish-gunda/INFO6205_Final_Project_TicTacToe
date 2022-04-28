@@ -1,9 +1,15 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 public class Game {
 
-    private int[][] board;
+    public int[][] board;
     public MenaceStrategy menaceStrategy;
     public HumanStrategy humanStrategy;
     public float p;
+    private static final Logger logger = LogManager.getLogger(Game.class);
+
 
     public void setP(float p) {
         this.p = p;
@@ -28,10 +34,13 @@ public class Game {
 
     public void peekCurrentState() {
         for (int i=0; i<3; i++) {
-            System.out.println(board[i][0]+" || "+board[i][1]+" || "+board[i][2]);
-            System.out.println("______________");
+            logger.info(board[i][0]+" || "+board[i][1]+" || "+board[i][2]);
+//            System.out.println(board[i][0]+" || "+board[i][1]+" || "+board[i][2]);
+            logger.info("______________");
+//            System.out.println("______________");
         }
-        System.out.println("######################");
+        logger.info("######################");
+//        System.out.println("######################");
     }
 
 
@@ -61,7 +70,7 @@ public class Game {
     }
 
     public int run() {
-        peekCurrentState();
+//        peekCurrentState();
         int player = 1;
         int position = -1;
         String s = convert2dboardToString(board);
@@ -72,7 +81,7 @@ public class Game {
                     return 0;
                 }
                 board[position / 3][position % 3] = 1;
-
+//                peekCurrentState();
                 s = convert2dboardToString(board);
                 if(checkwin(board,position,player)!=0){
                     return checkwin(board,position,player);
@@ -86,14 +95,14 @@ public class Game {
                     return 0;
                 }
                 board[position / 3][position % 3] = 2;
-
+//                peekCurrentState();
                 s = convert2dboardToString(board);
                 if(checkwin(board,position,player)!=0){
                     return checkwin(board,position,player);
                 }
                 player = 1;
             }
-            peekCurrentState();
+
 
         }
         return checkwin(board,position, player);

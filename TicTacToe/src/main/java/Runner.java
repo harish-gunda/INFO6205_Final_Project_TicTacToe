@@ -7,7 +7,7 @@ public class Runner {
 
     public static void main(String[] args) {
 
-        int alpha = 10;
+        int alpha = 5;
         int beta = 20;
         int gamma = 20;
         int delta = 0;
@@ -16,7 +16,7 @@ public class Runner {
         int humanWins = 0;
         int draws = 0;
         int NUMBER_OF_TRAINS = 10000;
-        float probability = 0.9f;
+        float probability = 0.8f;
 //        List<Integer> m = new ArrayList<>();
 //        List<Integer> h = new ArrayList<>();
 //        List<Integer> d = new ArrayList<>();
@@ -54,7 +54,7 @@ public class Runner {
         draws = 0;
         probability = 0.9f;
         logger.info("Run Start");
-        for (int i = 0; i<NUMBER_OF_TRAINS; i++) {
+        for (int i = 0; i<10000; i++) {
             Game game = new Game(menaceStrategy, humanStrategy,probability);
             gameResult = game.run();
 //            game.peekCurrentState();

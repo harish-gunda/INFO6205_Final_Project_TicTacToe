@@ -76,7 +76,7 @@ public class Runner {
 //        logger.info(Arrays.toString(h.toArray()));
 //        logger.info(Arrays.toString(d.toArray()));
         logger.info("Run End");
-        System.out.println("completed");
+        System.out.println("complete");
 
     }
 

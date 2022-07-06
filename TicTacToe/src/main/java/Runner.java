@@ -22,7 +22,7 @@ public class Runner {
 //        List<Integer> d = new ArrayList<>();
         MenaceStrategy menaceStrategy = new MenaceStrategy(alpha);
         HumanStrategy humanStrategy = new HumanStrategy();
-        logger.info("Train Started");
+        logger.info("Train Start");
         for (int i = 0; i<NUMBER_OF_TRAINS; i++) {
             Game game = new Game(menaceStrategy, humanStrategy,probability);
             gameResult = game.run();
